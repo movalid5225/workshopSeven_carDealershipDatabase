@@ -30,27 +30,60 @@ CREATE TABLE Dealerships (
 CREATE TABLE Inventory (
     dealership_id INT NOT NULL,
     VIN VARCHAR(17) NOT NULL,
-    PRIMARY KEY (dealership_id, VIN)
+    PRIMARY KEY (`dealership_id`, `VIN`)
 );
 
 -- 4. SalesContracts table
 CREATE TABLE Sales_contracts (
-    sales_id INT,
+    sales_id INT NOT NULL AUTO_INCREMENT,
     VIN VARCHAR(17) NOT NULL,
     sale_date DATE NOT NULL,
     sale_price DECIMAL(10,2) NOT NULL,
     customer_name VARCHAR(100),
-    PRIMARY KEY (`sales_id`)
+    PRIMARY KEY (sales_id),
+    FOREIGN KEY (VIN) REFERENCES Vehicles(VIN)
 );
 
 -- 5. LeaseContracts table 
 CREATE TABLE Lease_contracts (
-    lease_id INT PRIMARY KEY,
+    lease_id INT NOT NULL AUTO_INCREMENT,
     VIN VARCHAR(17) NOT NULL,
     lease_start_date DATE NOT NULL,
     lease_end_date DATE NOT NULL,
     monthly_payment DECIMAL(10,2) NOT NULL,
     customer_name VARCHAR(100),
-    FOREIGN KEY (VIN) REFERENCES vehicles(VIN)
+    PRIMARY KEY (lease_id),
+    FOREIGN KEY (VIN) REFERENCES Vehicles(VIN)
 );
+
+
+
+-- Vehicle inserts
+INSERT INTO Vehicles (VIN, make, model, year, color, price, mileage, sold) VALUES
+('1HGCM82633A004352', 'Honda', 'Accord', 2020, 'Red', 22000.00, 15000, 0),
+('1FAFP404X1F192837', 'Ford', 'Mustang', 2019, 'Blue', 27000.00, 12000, 1),
+('2T1BURHE6FC123456', 'Toyota', 'Corolla', 2021, 'White', 18000.00, 8000, 0);
+
+-- Dealership inserts
+INSERT INTO Dealerships (name, address, phone) VALUES
+('City Motors', '123 Main St', '555-123-4567'),
+('AutoHub', '456 Elm St', '555-987-6543'),
+('DriveTime', '789 Oak St', '555-555-5555');
+
+-- Inventory inserts
+INSERT INTO Inventory (dealership_id, VIN) VALUES
+(1, '1HGCM82633A004352'),
+(2, '1FAFP404X1F192837'),
+(3, '2T1BURHE6FC123456');
+
+-- Sales Contracts inserts
+INSERT INTO Sales_contracts (VIN, sale_date, sale_price, customer_name) VALUES
+('1FAFP404X1F192837', '2024-05-01', 25000.00, 'John Doe');
+
+-- Lease Contracts inserts
+INSERT INTO Lease_contracts (VIN, lease_start_date, lease_end_date, monthly_payment, customer_name) VALUES
+('1HGCM82633A004352', '2024-01-01', '2025-01-01', 300.00, 'Jane Smith');
+
+
+
 
